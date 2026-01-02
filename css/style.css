@@ -1,0 +1,201 @@
+/* -----------------------
+       INTERNAL CSS FOR ALL PAGES
+       ------------------------ */
+
+    /* RESET & GLOBAL */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f2f2f2;
+      color: #333;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER (from header.html) => fixed nav bar */
+    /* Fixed Navigation Bar with Colorful Gradient & Enhanced Hover Effects */
+header nav {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #8e44ad, #3498db);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  z-index: 9999;
+}
+
+header nav .brand {
+  font-size: 26px;
+  font-weight: bold;
+  color: #fff;
+  transition: transform 0.3s, font-size 0.3s;
+}
+
+header nav .brand:hover {
+  transform: scale(1.1);
+  font-size: 28px;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+}
+
+header nav ul li {
+  margin-left: 20px;
+}
+
+/* Each link transitions its transform, background, and color independently */
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: font-size 0.3s, background 0.3s, color 0.3s;
+  }
+  
+  header nav ul li a:hover {
+    background-color: #f1c40f; /* Vibrant yellow background on hover */
+    color: #2c3e50;           /* Dark text for contrast */
+    font-size: 20px;          /* Increases font size on hover */
+  }
+  
+
+    /* MAIN CONTENT - each page extends this */
+    main {
+      flex: 1; 
+      margin-top: 60px; /* so content doesn't hide behind fixed nav */
+    }
+
+
+
+
+
+    
+
+    /* FOOTER (from footer.html) => sticky at bottom */
+    footer {
+        background: linear-gradient(90deg, #8e44ad, #3498db);
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+      }
+      footer .college {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      footer .project-name {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      footer .team {
+        font-size: 14px;
+        line-height: 1.6;
+      } 
+
+
+      .contact-section {
+        background: #f4f6f9;
+        padding: 60px 20px;
+        text-align: center;
+    }
+    
+    .contact-section h2 {
+        font-size: 2.5em;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+    
+    .contact-section p {
+        color: #555;
+        font-size: 1.1em;
+        margin-bottom: 40px;
+    }
+    
+    .contact-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 40px;
+        max-width: 1000px;
+        margin: auto;
+    }
+    
+    .contact-form, .contact-info {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        width: 45%;
+        min-width: 300px;
+    }
+    
+    .contact-form h3, .contact-info h3 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+    
+    .contact-form input, .contact-form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    
+    .contact-form button {
+        background: #3498db;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+    }
+    
+    .contact-form button:hover {
+        background: #2980b9;
+        transform: scale(1.05);
+    }
+    
+    /* Contact Info */
+    .contact-info p {
+        margin-bottom: 10px;
+        color: #333;
+    }
+    
+    .contact-info strong {
+        color: #2980b9;
+    }
+    
+    /* Map */
+    .map-container {
+        margin-top: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    
+
+
+
+
+
+
+
+
+    

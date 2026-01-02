@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+{% block title %}Detector - Brain Tumor Detection{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 30px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center;">
+  <h2 style="color: #2c3e50; margin-bottom: 20px;">Brain Tumor Classification Using Deep Learning</h2>
+  <form id="upload-file" method="post" enctype="multipart/form-data">
+    <!-- Hidden File Input -->
+    <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg" style="display: none;">
+    <!-- Custom Label Acting as Button -->
+    <label for="imageUpload" style="display: inline-block; margin: 10px auto; padding: 15px 30px; border: none; border-radius: 8px; background: linear-gradient(45deg, #3498db, #8e44ad); color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; box-shadow: 0px 4px 8px rgba(0,0,0,0.2); transition: transform 0.3s, background 0.3s;" 
+           onmouseover="this.style.transform='scale(1.05)'" 
+           onmouseout="this.style.transform='scale(1)'">
+      Upload the MRI Scan
+    </label>
+  </form>
+  
+  
+  <div class="image-section" style="display: none; margin: 20px 0;">
+    <img id="imagePreview" src="#" alt="Image Preview" style="border: 5px solid #3498db; border-radius: 8px; width: 300px; height: 300px; object-fit: cover;">
+    <br><br>
+    <button type="button" class="btn" id="btn-predict" style="padding: 10px 20px; background: #3498db; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background 0.3s;">Predict!</button>
+  </div>
+  
+  <div class="loader" style="margin: 20px auto; display: none; border: 6px solid #f3f3f3; border-top: 6px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite;"></div>
+  
+  <h3 id="result" style="margin-top: 20px; font-size: 18px; font-weight: bold; color: #2c3e50;"></h3>
+  
+  <!-- Get Report Button (hidden until prediction is complete) -->
+  <button type="button" id="btn-get-report" style="display: none; margin-top: 20px; padding: 10px 20px; background: #2ecc71; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Get Report</button>
+</div>
+
+<!-- Prediction Modal -->
+<div id="popup-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 9998; justify-content: center; align-items: center;">
+  <div id="popup-modal" style="background: #fff; padding: 20px; border-radius: 10px; width: 25%; text-align: center;">
+    <img id="popup-image" src="#" alt="Uploaded Image" style="width: 100%; max-height: 200px; object-fit: cover; margin-bottom: 10px; border: 2px solid #3498db; border-radius: 8px;">
+    <p id="popup-result"></p>
+  </div>
+</div>
+
+<!-- User Details Modal (Get Report Form) -->
+<div id="details-modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 10000; justify-content: center; align-items: center;">
+  <div id="details-modal" style="background: #fff; padding: 20px; border-radius: 10px; width: 40%; text-align: left; max-height: 90%; overflow-y: auto;">
+    <h2 style="text-align: center; color: #2c3e50;">Enter Your Details</h2>
+    <form id="report-form">
+      <label>Name:</label>
+      <input type="text" id="user-name" required style="width:100%; padding:8px; margin-bottom:10px;"><br>
+      <label>Age:</label>
+      <input type="number" id="user-age" required style="width:100%; padding:8px; margin-bottom:10px;"><br>
+      <label>Date of Birth:</label>
+      <input type="date" id="user-dob" required style="width:100%; padding:8px; margin-bottom:10px;"><br>
+      <label>Phone Number:</label>
+      <input type="text" id="user-phone" required style="width:100%; padding:8px; margin-bottom:10px;"><br>
+      <label>Address:</label>
+      <input type="text" id="user-address" required style="width:100%; padding:8px; margin-bottom:10px;"><br>
+      <label>Blood Group:</label>
+      <select id="user-blood" required style="width:100%; padding:8px; margin-bottom:10px;">
+        <option value="">Select Blood Group</option>
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B-">B-</option>
+        <option value="AB+">AB+</option>
+        <option value="AB-">AB-</option>
+        <option value="O+">O+</option>
+        <option value="O-">O-</option>
+      </select><br>
+      <label>Scanning Date:</label>
+      <input type="date" id="scan-date" required style="width:100%; padding:8px; margin-bottom:10px;"><br>
+      <div style="text-align: center; margin-top: 20px;">
+        <button type="submit" style="padding: 10px 20px; background: #3498db; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Generate Report</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Report Modal -->
+<div id="report-modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 10001; overflow-y: auto; padding: 20px;">
+  <div id="report-modal" style="max-width: 800px; margin: auto; border: 2px solid #3498db; padding: 20px; border-radius: 10px;">
+    <!-- Report Header --> 
+    <div style="text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 20px;">
+      <h1 style="font-weight: bold;">Ghousia College of Engineering</h1>
+      <p style="font-size: 0.9em; color: #555;">Brain Tumor Detection Using VGG19 Model (95% Accuracy)</p>
+    </div>
+    <!-- Report Details in Table Format --> 
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;"> 
+      <tr style="background: #3498db; color: #fff;">
+        <th style="padding: 8px; border: 1px solid #fff;">Field</th>
+        <th style="padding: 8px; border: 1px solid #fff;">Details</th>
+      </tr>
+      <tbody id="report-details">
+        <!-- Report rows will be injected here via JS -->
+      </tbody>
+    </table>
+    <!-- Recommendation Section --> 
+    <div id="tumor-recommendation" style="margin-bottom: 20px; font-size: 1em;"></div>
+    <!-- Uploaded Image (smaller) --> 
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img id="report-image" src="#" alt="Uploaded Image" style="max-width: 150px; border: 2px solid #3498db; border-radius: 8px;">
+    </div>
+    <!-- Prediction Result & Date --> 
+    <div id="report-prediction" style="text-align: center; margin-bottom: 20px; font-size: 1.1em; color: #2c3e50;"></div>
+    <!-- Report Footer --> 
+    <div style="text-align: center; border-top: 2px solid #3498db; padding-top: 10px; font-size: 0.8em; color: #777;">
+      <p>© 2025 Predicted using ML</p>
+      <p><img src="/static/images/seal.png" alt="Seal" style="height: 40px;"></p>
+    </div>
+    <!-- Print Button --> 
+    <div style="text-align: center; margin-top: 20px;">
+      <button onclick="window.print();" style="padding: 10px 20px; background: #2ecc71; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Print Report</button>
+    </div>
+  </div>
+</div>
+
+<!-- Print Media CSS: Ensure the report fits one A4 page -->
+<style>
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    #report-modal, #report-modal * {
+      visibility: visible;
+    }
+    #report-modal {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 21cm;   /* A4 width */
+      height: 29.7cm;/* A4 height */
+      margin: 0;
+      padding: 20px;
+      overflow: visible;
+    }
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+
+<script>
+  // Robust voice announcement function
+  function speakAnnouncement(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    function setVoice() {
+      const voices = window.speechSynthesis.getVoices();
+      const selectedVoice = voices.find(v => v.name.includes("Google UK English Male")) || voices[0];
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+      }
+      window.speechSynthesis.speak(utterance);
+    }
+    if (window.speechSynthesis.getVoices().length > 0) {
+      setVoice();
+    } else {
+      window.speechSynthesis.onvoiceschanged = setVoice;
+    }
+  }
+
+  // Image Preview Functionality
+  document.getElementById('imageUpload').addEventListener('change', function(event) {
+    const imageSection = document.querySelector('.image-section');
+    const imagePreview = document.getElementById('imagePreview');
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        imagePreview.src = e.target.result;
+        imageSection.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Predict Button Click
+  document.getElementById('btn-predict').addEventListener('click', function() {
+    const fileInput = document.getElementById('imageUpload');
+    if (fileInput.files.length === 0) {
+      alert("Please select an image file first.");
+      return;
+    }
+    const file = fileInput.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // Show loader
+    document.querySelector('.loader').style.display = "block";
+    // Hide prediction modal if visible
+    document.getElementById('popup-overlay').style.display = "none";
+
+    fetch("/predict", {
+      method: "POST",
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      document.querySelector('.loader').style.display = "none";
+      const resultText = "Prediction: " + data.prediction + " with confidence " + data.confidence;
+      document.getElementById('result').innerText = resultText;
+
+      // Display prediction modal
+      document.getElementById('popup-image').src = document.getElementById('imagePreview').src;
+      document.getElementById('popup-result').innerHTML = resultText + "<br>" + data.announcement;
+      document.getElementById('popup-overlay').style.display = "flex";
+
+      // Announce result via voice
+      speakAnnouncement(data.announcement);
+
+      // Show Get Report button after prediction is complete
+      document.getElementById('btn-get-report').style.display = "inline-block";
+
+      // Auto-hide prediction modal after 5 seconds
+      setTimeout(() => {
+        document.getElementById('popup-overlay').style.display = "none";
+      }, 5000);
+
+      // Store prediction data for report use
+      window.predictionData = data;
+    })
+    .catch(error => {
+      document.querySelector('.loader').style.display = "none";
+      console.error("Error:", error);
+      alert("An error occurred while processing the image.");
+    });
+  });
+
+  // Get Report Button Click: Show user details form modal
+  document.getElementById('btn-get-report').addEventListener('click', function() {
+    document.getElementById('details-modal-overlay').style.display = "flex";
+  });
+
+  // Handle Report Form Submission
+  document.getElementById('report-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Collect user details
+    const userDetails = {
+      name: document.getElementById('user-name').value,
+      age: document.getElementById('user-age').value,
+      dob: document.getElementById('user-dob').value,
+      phone: document.getElementById('user-phone').value,
+      address: document.getElementById('user-address').value,
+      blood: document.getElementById('user-blood').value,
+      scanDate: document.getElementById('scan-date').value
+    };
+    // Hide details modal
+    document.getElementById('details-modal-overlay').style.display = "none";
+
+    // Prepare report details in table format
+    const currentDate = new Date().toLocaleDateString();
+    let tableHtml = '<tr><td style="padding:8px; border:1px solid #3498db; font-weight:bold;">Name</td><td style="padding:8px; border:1px solid #3498db;">' + userDetails.name + '</td></tr>';
+    tableHtml += '<tr><td style="padding:8px; border:1px solid #3498db; font-weight:bold;">Age</td><td style="padding:8px; border:1px solid #3498db;">' + userDetails.age + '</td></tr>';
+    tableHtml += '<tr><td style="padding:8px; border:1px solid #3498db; font-weight:bold;">Date of Birth</td><td style="padding:8px; border:1px solid #3498db;">' + userDetails.dob + '</td></tr>';
+    tableHtml += '<tr><td style="padding:8px; border:1px solid #3498db; font-weight:bold;">Phone</td><td style="padding:8px; border:1px solid #3498db;">' + userDetails.phone + '</td></tr>';
+    tableHtml += '<tr><td style="padding:8px; border:1px solid #3498db; font-weight:bold;">Address</td><td style="padding:8px; border:1px solid #3498db;">' + userDetails.address + '</td></tr>';
+    tableHtml += '<tr><td style="padding:8px; border:1px solid #3498db; font-weight:bold;">Blood Group</td><td style="padding:8px; border:1px solid #3498db;">' + userDetails.blood + '</td></tr>';
+    tableHtml += '<tr><td style="padding:8px; border:1px solid #3498db; font-weight:bold;">Scanning Date</td><td style="padding:8px; border:1px solid #3498db;">' + userDetails.scanDate + '</td></tr>';
+    tableHtml += '<tr><td style="padding:8px; border:1px solid #3498db; font-weight:bold;">Report Generated On</td><td style="padding:8px; border:1px solid #3498db;">' + currentDate + '</td></tr>';
+    tableHtml += '<tr><td style="padding:8px; border:1px solid #3498db; font-weight:bold;">Prediction</td><td style="padding:8px; border:1px solid #3498db;">' + document.getElementById('result').innerText + '</td></tr>';
+
+    // Dynamic Recommendation based on prediction type with detailed precaution advice
+    const prediction = window.predictionData.prediction.toLowerCase();
+    let recommendation = '';
+    if (prediction.includes('glioma')) {
+      recommendation = '<p style="color: red; font-weight:bold;">A Glioma Tumor has been detected. This is a very severe condition. Immediate consultation with a specialized neurosurgeon is critical. Until you reach the hospital, avoid strenuous activities, remain calm, and monitor symptoms such as severe headaches, nausea, or vision changes. Emergency care is strongly recommended.</p>';
+    } else if (prediction.includes('meningioma')) {
+      recommendation = '<p style="color: red; font-weight:bold;">A Meningioma Tumor has been detected. Prompt evaluation is necessary. Please contact a hospital immediately and follow your specialist’s advice. Monitor for any changes in neurological function.</p>';
+    } else if (prediction.includes('pituitary')) {
+      recommendation = '<p style="color: red; font-weight:bold;">A Pituitary Tumor has been detected. Urgent evaluation by an endocrinologist and neurosurgeon is advised. Monitor any changes in vision or hormonal balance, and seek immediate care if symptoms worsen.</p>';
+    } else if (prediction.includes('healthy')) {
+      recommendation = '<p style="color: green; font-weight:bold;">Your brain appears healthy. Continue regular check-ups and maintain a balanced lifestyle.</p>';
+    } else {
+      recommendation = '<p style="color: red; font-weight:bold;">Please consult your physician immediately for further evaluation.</p>';
+    }
+
+    // Set report modal content
+    document.getElementById('report-details').innerHTML = tableHtml;
+    document.getElementById('tumor-recommendation').innerHTML = recommendation;
+    document.getElementById('report-prediction').innerHTML = document.getElementById('result').innerText;
+    document.getElementById('report-image').src = document.getElementById('imagePreview').src;
+
+    // Show the report modal (full page view)
+    document.getElementById('report-modal-overlay').style.display = "block";
+  });
+</script>
+{% endblock %}

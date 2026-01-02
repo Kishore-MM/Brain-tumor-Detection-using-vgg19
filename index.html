@@ -1,0 +1,115 @@
+<style>
+  
+  .info-section {
+  background: #fff;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.info-section h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.info-section p.description {
+  max-width: 800px;
+  margin: 0 auto 30px auto;
+  line-height: 1.5;
+  color: #555;
+}
+
+.info-section .cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* centers the row of cards */
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.info-section .card {
+  background: #ecf0f1;
+  border-radius: 10px;
+  padding: 20px;
+  width: 250px;  /* Fixed width for each card */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+  text-align: left;
+}
+
+.info-section .card:hover {
+  transform: translateY(-5px); /* Subtle lift effect on hover */
+}
+
+.info-section .card h3 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.info-section .card p {
+  color: #444;
+  font-size: 0.95em;
+  line-height: 1.4;
+}
+</style>
+
+{% extends "base.html" %}
+{% block title %}Home - Brain Tumor Detection{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section style="
+  background: linear-gradient(to right, #8e44ad, #3498db);
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  padding: 40px 20px;">
+  <h1 style="font-size: 3em; margin-bottom: 20px; text-shadow: 2px 2px 5px rgba(0,0,0,0.4);">
+    Brain Tumor Detection
+  </h1>
+  <p style="font-size: 1.3em; max-width: 700px; line-height: 1.5; margin-bottom: 30px;">
+    Empowering medical professionals and patients with cutting-edge deep learning technology 
+    to detect and classify brain tumors with confidence and accuracy.
+  </p>
+  <a href="/detector" style="
+    display: inline-block;
+    background-color: #f1c40f;
+    color: #2c3e50;
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.3s;">
+    Get Started
+  </a>
+</section>
+
+<!-- Info Section -->
+<section class="info-section">
+  <h2>Why Choose Our Platform?</h2>
+  <p class="description">
+    Our system leverages advanced convolutional neural networks trained on extensive MRI datasets.
+    This ensures highly accurate predictions, aiding in faster diagnosis and improved patient outcomes.
+  </p>
+  <div class="cards">
+    <div class="card">
+      <h3>High Accuracy</h3>
+      <p>We use state-of-the-art deep learning models to provide reliable results you can trust.</p>
+    </div>
+    <div class="card">
+      <h3>Easy to Use</h3>
+      <p>Our user-friendly interface makes it simple for anyone to upload scans and view results.</p>
+    </div>
+    <div class="card">
+      <h3>Faster Diagnosis</h3>
+      <p>Automated detection helps medical professionals make quicker decisions and focus on patient care.</p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

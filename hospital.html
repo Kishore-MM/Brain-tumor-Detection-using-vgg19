@@ -1,0 +1,214 @@
+{% include 'header.html' %}
+<section class="hospital-section">
+    <div class="container">
+        <h2>Find the Best Hospitals for Brain Tumor Treatment in Karnataka</h2>
+        <p>Select a district to find specialized hospitals near you.</p>
+        
+        <!-- District Selection Dropdown -->
+        <div class="search-container">
+            <select id="districtSelect" onchange="filterHospitals()">
+                <option value="">-- Select District --</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Mysore">Mysore</option>
+                <option value="Mangalore">Mangalore</option>
+                <option value="Hubli">Hubli</option>
+                <option value="Belgaum">Belgaum</option>
+            </select>
+        </div>
+
+        <!-- Hospital Listings Container -->
+        <div id="hospitalListings">
+            <!-- Bangalore Hospitals -->
+            <div class="district-hospitals" id="Bangalore-hospitals" style="display:none;">
+                <h3>Top Brain Tumor Hospitals in Bangalore</h3>
+                <div class="hospital-list">
+                    <div class="hospital-card">
+                        <img src="/static/images/narayana.jpeg" alt="Narayana Health">
+                        <h4>Narayana Health</h4>
+                        <p>Specialization: Neurosurgery, Oncology</p>
+                        <p>Rating: ⭐⭐⭐⭐⭐</p>
+                        <a href="https://www.narayanahealth.org/hospitals/bangalore/narayana-health-city" target="_blank" class="btn">View Details</a>
+                    </div>
+                    
+                    <div class="hospital-card">
+                        <img src="/static/images/manipal.jpeg" alt="Manipal Hospitals">
+                        <h4>Manipal Hospitals</h4>
+                        <p>Specialization: Brain Tumor Surgery, Radiation Therapy</p>
+                        <p>Rating: ⭐⭐⭐⭐⭐</p>
+                        <a href="https://www.manipalhospitals.com/bangalore/" target="_blank" class="btn">View Details</a>
+                    </div>
+                    
+                    <div class="hospital-card">
+                        <img src="/static/images/fortis.jpeg" alt="Fortis Hospital">
+                        <h4>Fortis Hospital</h4>
+                        <p>Specialization: Neurosciences, Brain Tumor Care</p>
+                        <p>Rating: ⭐⭐⭐⭐</p>
+                        <a href="https://www.fortishealthcare.com/india/hospitals/fortis-hospital-bangalore" target="_blank" class="btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mysore Hospitals -->
+            <div class="district-hospitals" id="Mysore-hospitals" style="display:none;">
+                <h3>Top Brain Tumor Hospitals in Mysore</h3>
+                <div class="hospital-list">
+                    <div class="hospital-card">
+                        <img src="/static/images/Apollo.jpeg" alt="Apollo Hospital Mysore">
+                        <h4>Apollo Hospital</h4>
+                        <p>Specialization: Neurology, Oncology</p>
+                        <p>Rating: ⭐⭐⭐⭐</p>
+                        <a href="https://www.apollohospitals.com/mysore" target="_blank" class="btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mangalore Hospitals -->
+            <div class="district-hospitals" id="Mangalore-hospitals" style="display:none;">
+                <h3>Top Brain Tumor Hospitals in Mangalore</h3>
+                <div class="hospital-list">
+                    <div class="hospital-card">
+                        <img src="/static/images/KMC.jpeg" alt="KMC Hospital Mangalore">
+                        <h4>KMC Hospital</h4>
+                        <p>Specialization: Neurosurgery</p>
+                        <p>Rating: ⭐⭐⭐⭐</p>
+                        <a href="https://www.kmc.org.in/" target="_blank" class="btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hubli Hospitals -->
+            <div class="district-hospitals" id="Hubli-hospitals" style="display:none;">
+                <h3>Top Brain Tumor Hospitals in Hubli</h3>
+                <div class="hospital-list">
+                    <div class="hospital-card">
+                        <img src="/static/images/St. John's.jpeg" alt="St. John's Hospital Hubli">
+                        <h4>St. John's Hospital</h4>
+                        <p>Specialization: Neurology</p>
+                        <p>Rating: ⭐⭐⭐⭐</p>
+                        <a href="https://www.stjohnshospital.in/" target="_blank" class="btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Belgaum Hospitals -->
+            <div class="district-hospitals" id="Belgaum-hospitals" style="display:none;">
+                <h3>Top Brain Tumor Hospitals in Belgaum</h3>
+                <div class="hospital-list">
+                    <div class="hospital-card">
+                        <img src="/static/images/KLES.jpeg" alt="KLES Hospital Belgaum">
+                        <h4>KLES Hospital</h4>
+                        <p>Specialization: Neuroscience</p>
+                        <p>Rating: ⭐⭐⭐⭐</p>
+                        <a href="https://www.klesdeemeduniversity.edu.in/hospital" target="_blank" class="btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- World's Best Hospitals Section -->
+        <h3>Best Brain Tumor Hospitals in the World</h3>
+        <div class="world-hospital-list">
+            <div class="hospital-card">
+                <img src="/static/images/Mayo.jpeg" alt="Mayo Clinic">
+                <h4>Mayo Clinic, USA</h4>
+                <a href="https://www.mayoclinic.org/" target="_blank" class="btn">Visit Website</a>
+            </div>
+            
+            <div class="hospital-card">
+                <img src="/static/images/Cleveland.jpeg" alt="Cleveland Clinic">
+                <h4>Cleveland Clinic, USA</h4>
+                <a href="https://my.clevelandclinic.org/" target="_blank" class="btn">Visit Website</a>
+            </div>
+            
+            <div class="hospital-card">
+                <img src="/static/images/Johns.jpeg" alt="Johns Hopkins Hospital">
+                <h4>Johns Hopkins Hospital, USA</h4>
+                <a href="https://www.hopkinsmedicine.org/" target="_blank" class="btn">Visit Website</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function filterHospitals() {
+    // Hide all district hospitals
+    const districtHospitals = document.querySelectorAll('.district-hospitals');
+    districtHospitals.forEach(div => div.style.display = 'none');
+
+    // Get selected district
+    const district = document.getElementById("districtSelect").value;
+    
+    // Show hospitals for selected district
+    if (district) {
+        const selectedHospitals = document.getElementById(`${district}-hospitals`);
+        if (selectedHospitals) {
+            selectedHospitals.style.display = 'block';
+        }
+    }
+}
+</script>
+
+<style>
+.hospital-section {
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.search-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#districtSelect {
+    padding: 10px;
+    font-size: 16px;
+}
+
+.hospital-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.hospital-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.hospital-card:hover {
+    transform: scale(1.05);
+}
+
+.hospital-card img {
+    max-width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.world-hospital-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+</style>
+
+{% include 'footer.html' %}

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Brain Tumor Detection{% endblock %}</title>
+  <style>
+    /* -----------------------
+       INTERNAL CSS FOR ALL PAGES
+       ------------------------ */
+
+    /* RESET & GLOBAL */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f2f2f2;
+      color: #333;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER (from header.html) => fixed nav bar */
+    /* Fixed Navigation Bar with Colorful Gradient & Enhanced Hover Effects */
+header nav {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #8e44ad, #3498db);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  z-index: 9999;
+}
+
+header nav .brand {
+  font-size: 26px;
+  font-weight: bold;
+  color: #fff;
+  transition: transform 0.3s, font-size 0.3s;
+}
+
+header nav .brand:hover {
+  transform: scale(1.1);
+  font-size: 28px;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+}
+
+header nav ul li {
+  margin-left: 20px;
+}
+
+/* Each link transitions its transform, background, and color independently */
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: font-size 0.3s, background 0.3s, color 0.3s;
+  }
+  
+  header nav ul li a:hover {
+    background-color: #f1c40f; /* Vibrant yellow background on hover */
+    color: #2c3e50;           /* Dark text for contrast */
+    font-size: 20px;          /* Increases font size on hover */
+  }
+  
+
+    /* MAIN CONTENT - each page extends this */
+    main {
+      flex: 1; 
+      margin-top: 60px; /* so content doesn't hide behind fixed nav */
+    }
+
+
+
+
+
+    
+
+    /* FOOTER (from footer.html) => sticky at bottom */
+    footer {
+        background: linear-gradient(90deg, #8e44ad, #3498db);
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+      }
+      footer .college {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      footer .project-name {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      footer .team {
+        font-size: 14px;
+        line-height: 1.6;
+      } 
+
+    /* You can add any other shared styles here (e.g., .btn, .loader, .modal, etc.) */
+  </style>
+</head>
+<body>
+
+  <!-- Include the common header partial (nav bar) -->
+  {% include 'header.html' %}
+
+  <!-- Each child page will put its unique content here -->
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Include the common footer partial -->
+  {% include 'footer.html' %}
+
+</body>
+</html>
